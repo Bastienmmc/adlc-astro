@@ -1,0 +1,28 @@
+---
+import type { Project } from '../data/projects';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<section class="hero-featured reveal" style={`--hero-image: url('${project.thumbnail}')`}>
+  <div class="hero-overlay">
+    <div class="container hero-content">
+      <p class="eyebrow">Realisations</p>
+      <h1>Des films penses pour durer.</h1>
+      <p>
+        Films d entreprise, portraits, reportages et projets documentaires realises avec une attention
+        particuliere portee au rythme, au regard et a la qualite d image.
+      </p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" data-video-open data-video-url={project.videoUrl} data-video-title={project.title}>
+          Lire la video
+        </button>
+        <a class="btn btn-secondary" href="#realisations">Voir les realisations</a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,43 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
+---
+
+<Layout title="Contact - Au-dela du cadre" description="Contact projet video entreprise, reportage, documentaire et drone.">
+  <PageHero
+    title="Parlons de votre projet."
+    text="Pour une video d entreprise, un portrait, un reportage, un projet documentaire ou des prises de vue aeriennes, vous pouvez me contacter par email ou via le formulaire ci-dessous."
+  />
+
+  <section class="section">
+    <div class="container copy-block reveal">
+      <p>
+        Decrivez simplement votre besoin, le contexte et ce que vous souhaitez produire. Une reponse vous
+        sera apportee dans les meilleurs delais.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact-panel reveal">
+      <p><strong>Email :</strong> <a href={`mailto:${site.email}`}>{site.email}</a></p>
+      <p><strong>Ville / zone :</strong> Base en Charente-Maritime, disponible selon les projets.</p>
+      <form class="form-grid" method="post" action="#">
+        <label>
+          Nom
+          <input type="text" name="name" autocomplete="name" required />
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" autocomplete="email" required />
+        </label>
+        <label>
+          Votre besoin
+          <textarea name="message" rows="6" required></textarea>
+        </label>
+        <button type="submit">Envoyer</button>
+      </form>
+    </div>
+  </section>
+</Layout>

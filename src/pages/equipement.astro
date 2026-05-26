@@ -1,0 +1,42 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+---
+
+<Layout title="Equipement - Au-dela du cadre" description="Materiel image, son, stabilisation et drone.">
+  <PageHero
+    title="Equipement"
+    text="Le materiel n est qu un outil. Il compte pour la fiabilite, la souplesse de tournage et la qualite technique, mais il reste au service du projet."
+  />
+
+  <section class="section">
+    <div class="container copy-block reveal">
+      <p>
+        Le setup evolue selon les besoins, mais il s organise autour d un ensemble leger, mobile et adapte
+        a des tournages varies : interviews, reportages, plans d illustration, prises de vue aeriennes et
+        tournages en deplacement.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container equipment-grid">
+      <article class="equipment-item reveal">
+        <h3>Camera</h3>
+        <p>Boitiers et optiques choisis pour leur fiabilite, leur latitude et leur polyvalence.</p>
+      </article>
+      <article class="equipment-item reveal">
+        <h3>Son</h3>
+        <p>Prise de son pensee pour l interview, la parole et les situations de terrain.</p>
+      </article>
+      <article class="equipment-item reveal">
+        <h3>Stabilisation</h3>
+        <p>Configuration legere pour accompagner le mouvement sans alourdir le tournage.</p>
+      </article>
+      <article class="equipment-item reveal">
+        <h3>Drone</h3>
+        <p>Outil complementaire pour situer un lieu, respirer un cadre ou enrichir un film sans le surcharger.</p>
+      </article>
+    </div>
+  </section>
+</Layout>

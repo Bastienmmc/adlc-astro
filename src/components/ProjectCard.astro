@@ -1,0 +1,25 @@
+---
+import type { Project } from '../data/projects';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<article class="project-card reveal">
+  <img src={project.thumbnail} alt={`Vignette du projet ${project.title}`} loading="lazy" />
+  <div class="project-card-content">
+    <div class="project-card-head">
+      <h3>{project.title}</h3>
+      <span>{project.year}</span>
+    </div>
+    <p>{project.description}</p>
+    <div class="project-card-foot">
+      <span class="project-tag">{project.category}</span>
+      {project.tags?.includes('drone') && <span class="project-tag">drone</span>}
+      <button data-video-open data-video-url={project.videoUrl} data-video-title={project.title}>Lire la video</button>
+    </div>
+  </div>
+</article>

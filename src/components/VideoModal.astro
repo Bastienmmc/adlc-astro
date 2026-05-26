@@ -1,0 +1,64 @@
+<div class="video-modal" data-video-modal hidden>
+  <div class="video-modal-overlay" data-video-close></div>
+  <div class="video-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="video-modal-title">
+    <div class="video-modal-head">
+      <h2 id="video-modal-title">Lecture video</h2>
+      <button type="button" class="video-modal-close" data-video-close aria-label="Fermer la video">
+        Fermer
+      </button>
+    </div>
+    <div class="video-modal-player">
+      <iframe
+        data-video-frame
+        src=""
+        title="Lecteur video"
+        frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+  const modal = document.querySelector('[data-video-modal]');
+  const frame = modal?.querySelector('[data-video-frame]');
+  const title = modal?.querySelector('#video-modal-title');
+  const openButtons = document.querySelectorAll('[data-video-open]');
+  const closeButtons = document.querySelectorAll('[data-video-close]');
+
+  if (modal && frame && title) {
+    const openModal = (url, label) => {
+      frame.setAttribute('src', url);
+      title.textContent = label || 'Lecture video';
+      modal.removeAttribute('hidden');
+      requestAnimationFrame(() => modal.classList.add('is-open'));
+      document.body.classList.add('lock-scroll');
+    };
+
+    const closeModal = () => {
+      modal.classList.remove('is-open');
+      document.body.classList.remove('lock-scroll');
+      setTimeout(() => {
+        modal.setAttribute('hidden', 'hidden');
+        frame.setAttribute('src', '');
+      }, 180);
+    };
+
+    openButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const url = button.getAttribute('data-video-url') || '';
+        const label = button.getAttribute('data-video-title') || 'Lecture video';
+        if (url) openModal(url, label);
+      });
+    });
+
+    closeButtons.forEach((button) => button.addEventListener('click', closeModal));
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+        closeModal();
+      }
+    });
+  }
+</script>

@@ -1,0 +1,30 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import ProjectSection from '../components/ProjectSection.astro';
+import { byCategory } from '../data/projects';
+---
+
+<Layout title="Documentaire - Au-dela du cadre" description="Projets documentaires immersifs et narratifs.">
+  <PageHero
+    title="Des formes plus libres, un regard plus construit."
+    text="Certains projets demandent plus de temps, plus d ecoute et une ecriture plus ouverte. La forme documentaire permet d aller au-dela de la simple presentation pour chercher un point de vue, une presence et un recit."
+  />
+
+  <section class="section">
+    <div class="container copy-block reveal">
+      <p>
+        Qu il s agisse d un portrait, d une immersion, d un territoire ou d une initiative, l approche
+        documentaire permet de donner davantage d epaisseur a ce qui est filme. Elle demande une attention
+        particuliere au rythme, au montage et a ce qui se joue dans les details.
+      </p>
+    </div>
+  </section>
+
+  <ProjectSection
+    id="documentaires"
+    title="Projets documentaires"
+    intro="Selection de formats immersifs et recits plus construits."
+    projects={byCategory('documentaire')}
+  />
+</Layout>

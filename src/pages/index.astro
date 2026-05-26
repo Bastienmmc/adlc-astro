@@ -1,0 +1,63 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroFeatured from '../components/HeroFeatured.astro';
+import CategoryNav from '../components/CategoryNav.astro';
+import ProjectSection from '../components/ProjectSection.astro';
+import { byCategory, featuredProject } from '../data/projects';
+---
+
+<Layout
+  title="Realisations - Au-dela du cadre"
+  description="Portfolio video freelance: interview, corporate, reportage et documentaire."
+>
+  <HeroFeatured project={featuredProject} />
+
+  <section class="section">
+    <div class="container copy-block reveal">
+      <h2>Chaque projet demande sa propre forme.</h2>
+      <p class="intro-text">
+        L idee n est pas de produire des images de plus, mais de construire un film juste, lisible
+        et utile, en restant attentif a ce qu il doit transmettre.
+      </p>
+    </div>
+  </section>
+
+  <CategoryNav />
+
+  <section id="realisations" class="section">
+    <div class="container copy-block reveal">
+      <h2>Une selection de projets realises pour differents besoins.</h2>
+      <p>
+        Une meme attention portee au fond, a la forme et a la coherence de l ensemble.
+      </p>
+    </div>
+  </section>
+
+  <ProjectSection
+    id="interview"
+    title="Interview"
+    intro="Portraits et prises de parole, centres sur la presence et la justesse du ton."
+    projects={byCategory('interview')}
+  />
+
+  <ProjectSection
+    id="corporate"
+    title="Corporate"
+    intro="Films clairs et soignes pour presenter activites, equipes et savoir-faire."
+    projects={byCategory('corporate')}
+  />
+
+  <ProjectSection
+    id="reportage"
+    title="Reportage"
+    intro="Immersions de terrain pour restituer une action, un lieu ou une dynamique collective."
+    projects={byCategory('reportage')}
+  />
+
+  <ProjectSection
+    id="documentaire"
+    title="Documentaire"
+    intro="Formes plus narratives ou la duree, le rythme et le regard prennent de la place."
+    projects={byCategory('documentaire')}
+  />
+</Layout>

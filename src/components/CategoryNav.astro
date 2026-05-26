@@ -1,0 +1,19 @@
+---
+import { categoryBlocs } from '../data/site';
+---
+
+<section class="section reveal">
+  <div class="container">
+    <div class="category-grid">
+      {
+        categoryBlocs.map((bloc, index) => (
+          <article class="category-card" style={`animation-delay:${index * 0.08}s`}>
+            <h3>{bloc.title}</h3>
+            <p>{bloc.description}</p>
+            <a href={`#${bloc.key}`}>Voir la section</a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
