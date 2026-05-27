@@ -1,0 +1,322 @@
+<div class="share-modal" data-share-modal aria-hidden="true">
+  <div class="share-overlay" data-share-close></div>
+
+  <div class="share-dialog" role="dialog" aria-modal="true" aria-labelledby="share-title" tabindex="-1">
+    <button class="share-close-btn" aria-label="Fermer" data-share-close>&times;</button>
+    <h2 id="share-title" class="share-title">Partager</h2>
+
+    <label class="share-select-wrap" for="share-target">
+      <select id="share-target" name="share-target" aria-label="Choisir ce qu on partage">
+        <option value="video">Cette video</option>
+        <option value="channel">Cette chaine</option>
+      </select>
+      <span class="share-chevron">▾</span>
+    </label>
+
+    <div class="share-buttons" role="group" aria-label="Boutons de partage">
+      <div class="share-fallback" aria-hidden="false">
+        <a id="share-fb" class="share-icon share-fb" href="#" target="_blank" rel="noopener" title="Facebook" aria-label="Partager sur Facebook">f</a>
+        <a id="share-tw" class="share-icon share-tw" href="#" target="_blank" rel="noopener" title="X" aria-label="Partager sur X">x</a>
+        <a id="share-ln" class="share-icon share-ln" href="#" target="_blank" rel="noopener" title="LinkedIn" aria-label="Partager sur LinkedIn">in</a>
+        <a id="share-pin" class="share-icon share-pin" href="#" target="_blank" rel="noopener" title="Pinterest" aria-label="Partager sur Pinterest">p</a>
+        <a id="share-tum" class="share-icon share-tum" href="#" target="_blank" rel="noopener" title="Tumblr" aria-label="Partager sur Tumblr">t</a>
+        <button id="share-copy" class="share-icon share-link" type="button" title="Copier le lien" aria-label="Copier le lien">🔗 Copier</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const modal = document.querySelector('[data-share-modal]');
+
+    if (!(modal instanceof HTMLElement)) {
+      return;
+    }
+
+    const closeButtons = modal.querySelectorAll('[data-share-close]');
+    const dialog = modal.querySelector('.share-dialog');
+    const select = modal.querySelector('#share-target');
+    const facebook = modal.querySelector('#share-fb');
+    const twitter = modal.querySelector('#share-tw');
+    const linkedin = modal.querySelector('#share-ln');
+    const pinterest = modal.querySelector('#share-pin');
+    const tumblr = modal.querySelector('#share-tum');
+    const copyButton = modal.querySelector('#share-copy');
+
+    let activeTrigger = null;
+
+    const getShareData = () => {
+      const mode = select instanceof HTMLSelectElement ? select.value : 'video';
+      const videoUrl = activeTrigger?.getAttribute('data-share-video-url') || window.location.href;
+      const channelUrl = activeTrigger?.getAttribute('data-share-channel-url') || window.location.origin;
+      const title = activeTrigger?.getAttribute('data-share-title') || document.title || 'Au dela du cadre';
+      const videoText = activeTrigger?.getAttribute('data-share-text') || 'Regarde cette video';
+      const channelText = activeTrigger?.getAttribute('data-share-channel-text') || 'Decouvre cette chaine';
+
+      return {
+        title,
+        text: mode === 'video' ? videoText : channelText,
+        url: mode === 'video' ? videoUrl : channelUrl,
+      };
+    };
+
+    const openPopup = (url) => {
+      window.open(url, '_blank', 'noopener,noreferrer,width=640,height=480');
+    };
+
+    const updateFallbackLinks = () => {
+      const data = getShareData();
+
+      if (facebook instanceof HTMLAnchorElement) {
+        facebook.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(data.url)}`;
+      }
+
+      if (twitter instanceof HTMLAnchorElement) {
+        twitter.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(data.text)}&url=${encodeURIComponent(data.url)}`;
+      }
+
+      if (linkedin instanceof HTMLAnchorElement) {
+        linkedin.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(data.url)}`;
+      }
+
+      if (pinterest instanceof HTMLAnchorElement) {
+        pinterest.href = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(data.url)}&description=${encodeURIComponent(data.text)}`;
+      }
+
+      if (tumblr instanceof HTMLAnchorElement) {
+        tumblr.href = `https://www.tumblr.com/widgets/share/tool?canonicalUrl=${encodeURIComponent(data.url)}&caption=${encodeURIComponent(data.text)}`;
+      }
+    };
+
+    const openModal = (trigger) => {
+      activeTrigger = trigger;
+      updateFallbackLinks();
+      modal.setAttribute('aria-hidden', 'false');
+      if (dialog instanceof HTMLElement) {
+        dialog.focus();
+      }
+    };
+
+    const closeModal = () => {
+      modal.setAttribute('aria-hidden', 'true');
+    };
+
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+
+      if (!(target instanceof Element)) {
+        return;
+      }
+
+      const openTrigger = target.closest('[data-share-button], [data-share-current]');
+
+      if (openTrigger instanceof HTMLElement) {
+        event.preventDefault();
+        openModal(openTrigger);
+        return;
+      }
+
+      const fallbackLink = target.closest('#share-fb, #share-tw, #share-ln, #share-pin, #share-tum');
+      if (fallbackLink instanceof HTMLAnchorElement) {
+        event.preventDefault();
+        openPopup(fallbackLink.href);
+      }
+    });
+
+    closeButtons.forEach((button) => {
+      button.addEventListener('click', closeModal);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
+        closeModal();
+      }
+    });
+
+    if (select instanceof HTMLSelectElement) {
+      select.addEventListener('change', updateFallbackLinks);
+    }
+
+    if (copyButton instanceof HTMLButtonElement) {
+      copyButton.addEventListener('click', async () => {
+        const data = getShareData();
+
+        try {
+          await navigator.clipboard.writeText(data.url);
+          const previous = copyButton.textContent;
+          copyButton.textContent = 'Copie';
+          window.setTimeout(() => {
+            copyButton.textContent = previous;
+          }, 1500);
+        } catch {
+          window.prompt('Copiez ce lien', data.url);
+        }
+      });
+    }
+  })();
+</script>
+
+<style is:global>
+  .share-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+  }
+
+  .share-modal[aria-hidden='false'] {
+    display: block;
+  }
+
+  .share-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(3px);
+  }
+
+  .share-dialog {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(580px, 92%);
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    border: 1px solid var(--border);
+    padding: 36px 40px;
+    border-radius: 10px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    color: var(--text);
+  }
+
+  .share-close-btn {
+    position: absolute;
+    right: 14px;
+    top: 12px;
+    background: transparent;
+    border: 0;
+    color: color-mix(in srgb, var(--text) 85%, transparent);
+    font-size: 28px;
+    cursor: pointer;
+  }
+
+  .share-title {
+    font-family: var(--serif);
+    font-size: 34px;
+    margin: 4px 0 18px;
+  }
+
+  .share-select-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface-offset);
+    border: 1px solid var(--border);
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+  }
+
+  .share-select-wrap select {
+    background: var(--surface);
+    color: var(--text);
+    border: 0;
+    border-radius: 6px;
+    font-size: 16px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    padding: 8px 10px;
+    padding-right: 30px;
+  }
+
+  .share-select-wrap select option {
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .share-chevron {
+    color: color-mix(in srgb, var(--text) 80%, transparent);
+    margin-left: 6px;
+  }
+
+  .share-buttons {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    justify-content: center;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+
+  .share-fallback {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .share-icon {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 18px;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .share-fb {
+    background: #1877f2;
+  }
+
+  .share-tw {
+    background: #1da1f2;
+  }
+
+  .share-pin {
+    background: #e60023;
+  }
+
+  .share-ln {
+    background: #0a66c2;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+  }
+
+  .share-tum {
+    background: #35465c;
+  }
+
+  .share-link {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.85);
+    padding: 8px 12px;
+    width: auto;
+    font-size: 14px;
+  }
+
+  @media (max-width: 420px) {
+    .share-dialog {
+      padding: 22px;
+    }
+
+    .share-title {
+      font-size: 26px;
+    }
+
+    .share-icon {
+      width: 40px;
+      height: 40px;
+      font-size: 16px;
+    }
+  }
+</style>

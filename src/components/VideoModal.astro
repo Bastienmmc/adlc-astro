@@ -18,7 +18,7 @@ const videos = projects.map((project) => ({
   <div class="overlay-player">
     <header class="topbar">
       <div class="topbar-left">
-        <button aria-label="Partager" class="share-btn" data-share-current>
+        <button aria-label="Partager" class="share-btn" data-share-current data-share-button>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M14 5h5v5"></path>
             <path d="M10 14L19 5"></path>
@@ -156,6 +156,15 @@ const videos = projects.map((project) => ({
   const extractYoutubeId = (url) => {
     const match = url.match(/embed\/([^?&/]+)/);
     return match ? match[1] : '';
+  };
+
+  const toWatchUrl = (url) => {
+    const id = extractYoutubeId(url);
+    if (!id) {
+      return window.location.href;
+    }
+
+    return `https://www.youtube.com/watch?v=${id}`;
   };
 
   const toEmbedUrl = (id, autoplay) => {
@@ -442,6 +451,12 @@ const videos = projects.map((project) => ({
       panelMeta.textContent = item.meta;
       panelDescription.textContent = item.description;
       poster.style.backgroundImage = `url('${item.poster}')`;
+      if (shareButton instanceof HTMLButtonElement) {
+        shareButton.setAttribute('data-share-video-url', toWatchUrl(item.src));
+        shareButton.setAttribute('data-share-channel-url', window.location.origin);
+        shareButton.setAttribute('data-share-title', item.panelTitle);
+        shareButton.setAttribute('data-share-text', item.description);
+      }
       renderThumbs();
       infoColumn.scrollTop = 0;
       progressBar && (progressBar.style.width = '0%');
@@ -628,34 +643,6 @@ const videos = projects.map((project) => ({
       }
     });
 
-    if (shareButton instanceof HTMLButtonElement) {
-      shareButton.addEventListener('click', async () => {
-        const currentVideo = list[currentIndex];
-
-        if (!currentVideo) {
-          return;
-        }
-
-        if (navigator.share) {
-          try {
-            await navigator.share({
-              title: currentVideo.panelTitle,
-              text: currentVideo.description,
-              url: window.location.href,
-            });
-            return;
-          } catch {
-            return;
-          }
-        }
-
-        try {
-          await navigator.clipboard.writeText(window.location.href);
-        } catch {
-          return;
-        }
-      });
-    }
   }
 </script>
 

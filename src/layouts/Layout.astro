@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import VideoModal from '../components/VideoModal.astro';
+import ShareModal from '../components/ShareModal.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -37,6 +38,7 @@ const {
     </main>
     <Footer />
     <VideoModal />
+    <ShareModal />
     <script is:inline>
       (() => {
         const root = document.documentElement;
