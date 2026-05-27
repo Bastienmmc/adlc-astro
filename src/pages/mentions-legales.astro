@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+---
+
+<Layout title="Mentions legales - Au-dela du cadre" description="Informations legales relatives au site." lightContentOnly={true}>
+  <PageHero
+    title="Mentions légales"
+    text="Page d information legale generale a personnaliser selon votre statut et votre hebergement."
+  />
+
+  <section class="section">
+    <div class="container copy-block reveal">
+      <p>
+        Editeur du site : Au-dela du cadre. Adresse de contact :
+        <a href="mailto:contact@audeladucadre.fr">contact@audeladucadre.fr</a>.
+      </p>
+      <p>
+        Directeur de publication : a completer. Hebergement : a completer (nom de l hebergeur, adresse,
+        contact).
+      </p>
+      <p>
+        Le site est soumis au droit francais. En cas de litige, les juridictions competentes seront celles
+        du ressort de l editeur, sauf disposition legale contraire.
+      </p>
+    </div>
+  </section>
+</Layout>

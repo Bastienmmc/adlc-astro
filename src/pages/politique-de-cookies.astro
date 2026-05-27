@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+---
+
+<Layout title="Politique de cookies - Au-dela du cadre" description="Informations sur l'utilisation des cookies." lightContentOnly={true}>
+  <PageHero
+    title="Politique de cookies"
+    text="Cette politique presente de maniere generale l usage des cookies sur le site."
+  />
+
+  <section class="section">
+    <div class="container copy-block reveal">
+      <p>
+        Le site peut utiliser des cookies techniques necessaires a son bon fonctionnement, ainsi que des
+        cookies de mesure d audience selon les outils actives.
+      </p>
+      <p>
+        Un cookie est un petit fichier depose sur votre terminal pour memoriser des preferences ou mesurer
+        la frequentation. Vous pouvez configurer votre navigateur pour refuser tout ou partie des cookies.
+      </p>
+      <p>
+        Le refus de certains cookies peut affecter l experience de navigation. Pour toute question,
+        contactez-nous a <a href="mailto:contact@audeladucadre.fr">contact@audeladucadre.fr</a>.
+      </p>
+    </div>
+  </section>
+</Layout>

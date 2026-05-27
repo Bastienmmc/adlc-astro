@@ -11,16 +11,16 @@ const getCategoryIcon = (key: string) => {
 };
 ---
 
-<section class="section services-bg reveal">
+<section class="section services-bg light-content-scope reveal">
   <div class="container">
-    <div class="category-grid services-grid">
+    <div class="category-grid services-grid scroll-sync" data-scroll-sync data-scroll-distance="150">
       {
         categoryBlocs.map((bloc, index) => (
           <article class="category-card service-card" style={`animation-delay:${index * 0.08}s`}>
             <div class="service-icon-wrapper" set:html={getCategoryIcon(bloc.key)} />
-            <h3 class="service-title">{bloc.title}</h3>
-            <p class="service-desc">{bloc.description}</p>
-            <a href={`#${bloc.key}`} class="service-link">Voir la section</a>
+            <h3 class="service-title scroll-sync" data-scroll-sync data-scroll-phase="title" data-scroll-lag="20" data-scroll-distance="130">{bloc.title}</h3>
+            <p class="service-desc scroll-sync" data-scroll-sync data-scroll-phase="text" data-scroll-lag="85" data-scroll-distance="150">{bloc.description}</p>
+            <a href={`#${bloc.key}`} class="service-link scroll-sync" data-scroll-sync data-scroll-phase="text" data-scroll-lag="130" data-scroll-distance="165">Voir la section</a>
           </article>
         ))
       }

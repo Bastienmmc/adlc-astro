@@ -13,14 +13,14 @@ import { site } from '../data/site';
   <HeroFeatured project={featuredProject} />
 
   <section id="a-propos" class="section">
-    <div class="container copy-block reveal">
-      <h2>Une approche sobre, attentive et ancrée dans le réel.</h2>
-      <p class="intro-text">
+    <div class="container copy-block reveal scroll-sync" data-scroll-sync data-scroll-distance="130">
+      <h2 class="scroll-sync" data-scroll-sync data-scroll-phase="title" data-scroll-lag="20" data-scroll-distance="120">Une approche sobre, attentive et ancrée dans le réel.</h2>
+      <p class="intro-text scroll-sync" data-scroll-sync data-scroll-phase="text" data-scroll-lag="95" data-scroll-distance="140">
         Vidéaste freelance, je conçois des films pour des entreprises, des associations, des institutions
         et des projets documentaires. Mon travail cherche la justesse du ton, la cohérence du récit et
         une image au service du propos.
       </p>
-      <p><a href="/bio">Lire plus</a></p>
+      <p class="scroll-sync" data-scroll-sync data-scroll-phase="text" data-scroll-lag="140" data-scroll-distance="150"><a href="/bio">Lire plus</a></p>
     </div>
   </section>
 
@@ -51,38 +51,11 @@ import { site } from '../data/site';
   />
 
   <section id="contact" class="section">
-    <div class="container copy-block reveal">
-      <h2>Parlons de votre projet.</h2>
-      <p>
-        Pour un film de marque, un portrait, un recit de terrain ou un projet culture & sport, vous
-        pouvez me contacter par email ou via le formulaire ci-dessous.
+    <div class="container copy-block reveal scroll-sync" data-scroll-sync data-scroll-distance="120">
+      <h2 class="scroll-sync" data-scroll-sync data-scroll-phase="title" data-scroll-lag="25" data-scroll-distance="115">Un projet en tête ?</h2>
+      <p class="scroll-sync" data-scroll-sync data-scroll-phase="text" data-scroll-lag="105" data-scroll-distance="135">
+        Écrivez-moi quelques lignes, et voyons ensemble comment lui donner forme.
       </p>
-      <p>
-        Decrivez simplement votre besoin, le contexte et ce que vous souhaitez produire. Une reponse
-        vous sera apportee dans les meilleurs delais.
-      </p>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container contact-panel reveal">
-      <p><strong>Email :</strong> <a href={`mailto:${site.email}`}>{site.email}</a></p>
-      <p><strong>Ville / zone :</strong> {site.location}</p>
-      <form class="form-grid" method="post" action="#">
-        <label>
-          Nom
-          <input type="text" name="name" autocomplete="name" required />
-        </label>
-        <label>
-          Email
-          <input type="email" name="email" autocomplete="email" required />
-        </label>
-        <label>
-          Votre besoin
-          <textarea name="message" rows="6" required></textarea>
-        </label>
-        <button type="submit">Envoyer</button>
-      </form>
     </div>
   </section>
 </Layout>

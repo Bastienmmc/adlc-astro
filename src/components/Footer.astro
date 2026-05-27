@@ -4,8 +4,41 @@ import { site } from '../data/site';
 
 <footer class="site-footer">
   <div class="container footer-inner">
-    <p>Films video freelance pour entreprises, associations et institutions.</p>
-    <a href={`mailto:${site.email}`}>{site.email}</a>
-    <span>{site.location}</span>
+    <div class="footer-top">
+      <div class="footer-col footer-col-left">
+        <p class="footer-contact-title">Un projet en tête ?</p>
+        <p class="footer-contact-subtitle">Contactez-moi pour lui donner forme.</p>
+      </div>
+
+      <div class="footer-col footer-col-right">
+        <p class="footer-email"><a href={`mailto:${site.email}`}>{site.email}</a></p>
+        <p class="footer-socials">
+          <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://vimeo.com/" target="_blank" rel="noopener">Vimeo</a>
+          <a href="https://www.youtube.com/" target="_blank" rel="noopener">YouTube</a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-mid">
+      <p class="footer-brand">Au-delà du cadre</p>
+      <p class="footer-categories">Films de marque · Portraits et récits · Sport et culture</p>
+      <p class="footer-links">
+        <a href="/bio">À propos</a>
+        <a href="/#films-marque">Projets</a>
+        <a href="/#contact">Contact</a>
+      </p>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-legal-links">
+        <a href="/termes-et-conditions">Termes et conditions</a>
+        <a href="/mentions-legales">Mentions légales</a>
+        <a href="/politique-de-cookies">Politique de cookies</a>
+        <a href="/politique-de-confidentialite">Politique de confidentialité</a>
+      </p>
+      <p class="footer-copy">© 2026 Au delà du cadre</p>
+    </div>
   </div>
 </footer>

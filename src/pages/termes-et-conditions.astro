@@ -1,0 +1,30 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+---
+
+<Layout title="Termes et conditions - Au-dela du cadre" description="Conditions generales d'utilisation du site." lightContentOnly={true}>
+  <PageHero
+    title="Termes et conditions"
+    text="Ces informations sont fournies a titre indicatif et doivent etre adaptees a votre situation juridique."
+  />
+
+  <section class="section">
+    <div class="container copy-block reveal">
+      <p>
+        En naviguant sur ce site, vous acceptez les presentes conditions d utilisation. Le contenu est
+        fourni a titre informatif et peut etre modifie a tout moment sans preavis.
+      </p>
+      <p>
+        Les elements publies (textes, images, videos, identite visuelle) restent proteges par le droit de
+        la propriete intellectuelle. Toute reproduction, adaptation ou diffusion sans autorisation prealable
+        est interdite.
+      </p>
+      <p>
+        L utilisateur s engage a utiliser ce site de maniere licite, sans nuire a son fonctionnement ni a
+        l image de son editeur. L editeur ne pourra etre tenu responsable en cas d interruption, d erreur
+        technique ou de dommage indirect lie a l utilisation du site.
+      </p>
+    </div>
+  </section>
+</Layout>

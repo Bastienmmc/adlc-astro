@@ -1,0 +1,29 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+---
+
+<Layout title="Politique de confidentialite - Au-dela du cadre" description="Informations sur la protection des donnees." lightContentOnly={true}>
+  <PageHero
+    title="Politique de confidentialité"
+    text="Informations generales sur la collecte et le traitement des donnees personnelles."
+  />
+
+  <section class="section">
+    <div class="container copy-block reveal">
+      <p>
+        Les donnees personnelles eventuellement collectées via les echanges email sont utilisees uniquement
+        pour repondre a vos demandes et assurer le suivi des projets.
+      </p>
+      <p>
+        Les informations ne sont pas revendues. Elles sont conservees pour la duree necessaire au traitement
+        de la relation, puis supprimees ou archivees selon les obligations legales applicables.
+      </p>
+      <p>
+        Conformement a la reglementation en vigueur, vous disposez d un droit d acces, de rectification,
+        d opposition et de suppression de vos donnees. Pour exercer ces droits :
+        <a href="mailto:contact@audeladucadre.fr">contact@audeladucadre.fr</a>.
+      </p>
+    </div>
+  </section>
+</Layout>

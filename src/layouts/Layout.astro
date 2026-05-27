@@ -8,16 +8,20 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  forceLight?: boolean;
+  lightContentOnly?: boolean;
 }
 
 const {
   title = 'Au-dela du cadre - Portfolio video',
-  description = 'Portfolio video minimaliste d un videaste freelance.'
+  description = 'Portfolio video minimaliste d un videaste freelance.',
+  forceLight = false,
+  lightContentOnly = false,
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang="fr" data-force-light={forceLight ? 'true' : undefined}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -31,9 +35,9 @@ const {
       rel="stylesheet"
     />
   </head>
-  <body>
+  <body data-light-content={lightContentOnly ? 'true' : undefined}>
     <Header />
-    <main>
+    <main class={lightContentOnly ? 'content-surface-light' : undefined}>
       <slot />
     </main>
     <Footer />
@@ -42,12 +46,23 @@ const {
     <script is:inline>
       (() => {
         const root = document.documentElement;
-        let theme = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        const body = document.body;
+        const forceLightTheme = root.getAttribute('data-force-light') === 'true';
+        const hasLightContentOnly = body?.getAttribute('data-light-content') === 'true';
+        let theme = hasLightContentOnly
+          ? 'dark'
+          : forceLightTheme
+          ? 'light'
+          : localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         root.setAttribute('data-theme', theme);
 
         const toggle = document.querySelector('[data-theme-toggle]');
         if (toggle) {
           toggle.addEventListener('click', () => {
+            if (forceLightTheme || hasLightContentOnly) {
+              return;
+            }
+
             theme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
             root.setAttribute('data-theme', theme);
             localStorage.setItem('theme', theme);
@@ -175,6 +190,113 @@ const {
           scrollToHash(window.location.hash, false);
         });
       });
+
+      const categoryCards = Array.from(document.querySelectorAll('.category-card'));
+      const canAnimateCards =
+        categoryCards.length > 0 &&
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (canAnimateCards) {
+        let cardFrameRequested = false;
+
+        const updateCategoryCardsMotion = () => {
+          cardFrameRequested = false;
+          const viewportCenter = window.innerHeight / 2;
+
+          categoryCards.forEach((node, index) => {
+            if (!(node instanceof HTMLElement)) {
+              return;
+            }
+
+            const rect = node.getBoundingClientRect();
+            const cardCenter = rect.top + rect.height / 2;
+            const distance = (cardCenter - viewportCenter) / window.innerHeight;
+            const direction = index % 2 === 0 ? 1 : -1;
+            const offset = Math.max(-14, Math.min(14, distance * 24 * direction));
+            node.style.setProperty('--card-scroll-y', `${offset.toFixed(2)}px`);
+          });
+        };
+
+        const onCardMotionScroll = () => {
+          if (cardFrameRequested) {
+            return;
+          }
+
+          cardFrameRequested = true;
+          window.requestAnimationFrame(updateCategoryCardsMotion);
+        };
+
+        window.addEventListener('scroll', onCardMotionScroll, { passive: true });
+        window.addEventListener('resize', onCardMotionScroll);
+        onCardMotionScroll();
+      }
+
+      const scrollSyncNodes = Array.from(document.querySelectorAll('[data-scroll-sync]'));
+      const canAnimateScrollSync =
+        scrollSyncNodes.length > 0 &&
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (canAnimateScrollSync) {
+        let scrollSyncFrameRequested = false;
+
+        const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+        const updateScrollSync = () => {
+          scrollSyncFrameRequested = false;
+          const viewportHeight = window.innerHeight || 1;
+
+          scrollSyncNodes.forEach((node) => {
+            if (!(node instanceof HTMLElement)) {
+              return;
+            }
+
+            const rect = node.getBoundingClientRect();
+            const center = rect.top + rect.height / 2;
+            const start = viewportHeight * 1.2;
+            const configuredLag = Number.parseFloat(node.dataset.scrollLag || '0');
+            const lag = Number.isFinite(configuredLag) ? configuredLag : 0;
+            const delayedCenter = center + lag;
+            const phase = node.dataset.scrollPhase === 'title' ? 'title' : 'text';
+            const end = viewportHeight * (phase === 'title' ? 0.5 : 0.46);
+            const progress = clamp((start - delayedCenter) / (start - end), 0, 1);
+            const stagedProgress =
+              phase === 'title'
+                ? clamp(progress * 1.45, 0, 1)
+                : clamp((progress - 0.12) / 0.88, 0, 1);
+            const eased =
+              phase === 'title'
+                ? 1 - Math.pow(1 - stagedProgress, 2.2)
+                : 1 - Math.pow(1 - stagedProgress, 1.5);
+            const configuredDistance = Number.parseFloat(node.dataset.scrollDistance || '110');
+            const distance = Number.isFinite(configuredDistance) ? configuredDistance : 110;
+            const shift = (1 - eased) * distance;
+            const startOpacity = phase === 'title' ? 0.2 : 0.04;
+            const opacity = startOpacity + eased * (1 - startOpacity);
+            const lastShift = Number.parseFloat(node.dataset.scrollCurrentY || `${shift}`);
+            const lastOpacity = Number.parseFloat(node.dataset.scrollCurrentOpacity || `${opacity}`);
+            const smoothShift = lastShift + (shift - lastShift) * 0.22;
+            const smoothOpacity = lastOpacity + (opacity - lastOpacity) * 0.24;
+
+            node.dataset.scrollCurrentY = smoothShift.toFixed(3);
+            node.dataset.scrollCurrentOpacity = smoothOpacity.toFixed(3);
+            node.style.setProperty('--scroll-sync-y', `${smoothShift.toFixed(2)}px`);
+            node.style.setProperty('--scroll-sync-opacity', smoothOpacity.toFixed(3));
+          });
+        };
+
+        const onScrollSync = () => {
+          if (scrollSyncFrameRequested) {
+            return;
+          }
+
+          scrollSyncFrameRequested = true;
+          window.requestAnimationFrame(updateScrollSync);
+        };
+
+        window.addEventListener('scroll', onScrollSync, { passive: true });
+        window.addEventListener('resize', onScrollSync);
+        onScrollSync();
+      }
     </script>
   </body>
 </html>
