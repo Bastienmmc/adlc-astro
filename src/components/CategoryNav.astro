@@ -1,16 +1,26 @@
 ---
 import { categoryBlocs } from '../data/site';
+
+const getCategoryIcon = (key: string) => {
+  const icons: Record<string, string> = {
+    'films-marque': '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
+    'portraits-recits': '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+    'culture-sport': '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.5 21h21M10.88 8.56a4 4 0 1 1 5.24 0M4.5 4.5a9 9 0 0 1 15 0"/></svg>'
+  };
+  return icons[key] || '';
+};
 ---
 
-<section class="section reveal">
+<section class="section services-bg reveal">
   <div class="container">
-    <div class="category-grid">
+    <div class="category-grid services-grid">
       {
         categoryBlocs.map((bloc, index) => (
-          <article class="category-card" style={`animation-delay:${index * 0.08}s`}>
-            <h3>{bloc.title}</h3>
-            <p>{bloc.description}</p>
-            <a href={`#${bloc.key}`}>Voir la section</a>
+          <article class="category-card service-card" style={`animation-delay:${index * 0.08}s`}>
+            <div class="service-icon-wrapper" set:html={getCategoryIcon(bloc.key)} />
+            <h3 class="service-title">{bloc.title}</h3>
+            <p class="service-desc">{bloc.description}</p>
+            <a href={`#${bloc.key}`} class="service-link">Voir la section</a>
           </article>
         ))
       }
