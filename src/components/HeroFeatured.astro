@@ -18,7 +18,13 @@ const { project } = Astro.props;
         rythme, au regard et a la qualite d image sur l ensemble du portfolio.
       </p>
       <div class="hero-actions">
-        <button class="btn btn-primary" data-video-open data-video-url={project.videoUrl} data-video-title={project.title}>
+        <button
+          class="btn btn-primary"
+          data-video-open
+          data-video-slug={project.slug}
+          data-video-url={project.videoUrl}
+          data-video-title={project.title}
+        >
           Lire la video
         </button>
         <a class="btn btn-secondary" href="#a-propos">Voir plus bas</a>

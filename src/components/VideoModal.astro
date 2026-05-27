@@ -1,64 +1,1169 @@
-<div class="video-modal" data-video-modal hidden>
-  <div class="video-modal-overlay" data-video-close></div>
-  <div class="video-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="video-modal-title">
-    <div class="video-modal-head">
-      <h2 id="video-modal-title">Lecture video</h2>
-      <button type="button" class="video-modal-close" data-video-close aria-label="Fermer la video">
-        Fermer
+---
+import { categoryLabels, projects } from '../data/projects';
+
+const videos = projects.map((project) => ({
+  slug: project.slug,
+  brand: 'Au dela du cadre',
+  heroTitle: project.title,
+  panelTitle: project.title,
+  meta: `${categoryLabels[project.category]} - ${project.year}`,
+  description: project.description,
+  src: project.videoUrl,
+  poster: project.thumbnail,
+  thumb: project.thumbnail,
+}));
+---
+
+<div class="video-modal-overlay-player" data-video-modal hidden>
+  <div class="overlay-player">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button aria-label="Partager" class="share-btn" data-share-current>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 5h5v5"></path>
+            <path d="M10 14L19 5"></path>
+            <path d="M19 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4"></path>
+          </svg>
+          <span>Partager</span>
+        </button>
+      </div>
+      <button class="close-btn" data-video-close aria-label="Fermer">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"></path></svg>
+      </button>
+    </header>
+
+    <div class="stage-wrap">
+      <button class="chevron" data-prev-video aria-label="Video precedente">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M15 18l-6-6 6-6"></path></svg>
+      </button>
+
+      <section class="content">
+        <div class="media-column">
+          <div class="video-shell">
+            <div class="video-stage">
+              <iframe
+                data-video-frame
+                src=""
+                title="Lecteur video"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+              <div class="poster" data-video-poster></div>
+
+              <div class="hero-center" data-video-hero>
+                <div class="brand" data-video-brand>Au dela du cadre</div>
+                <h1 class="hero-title" data-video-hero-title>LECTURE VIDEO</h1>
+                <button class="play-cta" data-video-play aria-label="Lire la video">
+                  <span class="play-ring">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+                  </span>
+                  <span>Lire la video</span>
+                </button>
+              </div>
+
+              <div class="controls" data-video-controls>
+                <div class="progress" data-video-progress>
+                  <div class="progress-bar" data-video-progress-bar></div>
+                </div>
+                <div class="controls-row">
+                  <div class="controls-left">
+                    <button class="icon-btn" data-video-play-pause aria-label="Lecture pause">
+                      <svg data-video-play-pause-icon width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
+                    </button>
+                    <button class="icon-btn" data-video-mute aria-label="Couper le son">
+                      <svg data-video-mute-icon width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 5L6 9H3v6h3l5 4V5z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18 6a8.5 8.5 0 0 1 0 12"></path></svg>
+                    </button>
+                    <div class="time" data-video-time>00:00 / 00:00</div>
+                  </div>
+                  <div class="controls-right">
+                    <button class="icon-btn" data-video-fullscreen aria-label="Plein ecran">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M16 3h3a2 2 0 0 1 2 2v3"></path><path d="M8 21H5a2 2 0 0 1-2-2v-3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="info-column" data-video-info-column>
+          <div class="panel-inner">
+            <h2 class="panel-title" data-video-panel-title>LECTURE VIDEO</h2>
+            <div class="panel-meta" data-video-panel-meta></div>
+            <p class="panel-description" data-video-panel-description></p>
+          </div>
+        </aside>
+      </section>
+
+      <button class="chevron" data-next-video aria-label="Video suivante">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 18l6-6-6-6"></path></svg>
       </button>
     </div>
-    <div class="video-modal-player">
-      <iframe
-        data-video-frame
-        src=""
-        title="Lecteur video"
-        frameborder="0"
-        allow="autoplay; fullscreen; picture-in-picture"
-        allowfullscreen
-      ></iframe>
+
+    <div class="thumbs-row">
+      <button class="thumbs-nav" data-thumbs-prev aria-label="Miniatures precedentes">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"></path></svg>
+      </button>
+      <div class="thumbs" data-video-thumbs></div>
+      <button class="thumbs-nav" data-thumbs-next aria-label="Miniatures suivantes">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 18l6-6-6-6"></path></svg>
+      </button>
     </div>
   </div>
 </div>
 
-<script>
+<script define:vars={{ videos }}>
+  const list = Array.isArray(videos) ? videos : [];
+  const bySlug = new Map(list.map((item, index) => [item.slug, index]));
+
   const modal = document.querySelector('[data-video-modal]');
   const frame = modal?.querySelector('[data-video-frame]');
-  const title = modal?.querySelector('#video-modal-title');
-  const openButtons = document.querySelectorAll('[data-video-open]');
-  const closeButtons = document.querySelectorAll('[data-video-close]');
+  const poster = modal?.querySelector('[data-video-poster]');
+  const hero = modal?.querySelector('[data-video-hero]');
+  const brand = modal?.querySelector('[data-video-brand]');
+  const heroTitle = modal?.querySelector('[data-video-hero-title]');
+  const panelTitle = modal?.querySelector('[data-video-panel-title]');
+  const panelMeta = modal?.querySelector('[data-video-panel-meta]');
+  const panelDescription = modal?.querySelector('[data-video-panel-description]');
+  const thumbs = modal?.querySelector('[data-video-thumbs]');
+  const infoColumn = modal?.querySelector('[data-video-info-column]');
+  const playButton = modal?.querySelector('[data-video-play]');
+  const videoShell = modal?.querySelector('.video-shell');
+  const controls = modal?.querySelector('[data-video-controls]');
+  const progress = modal?.querySelector('[data-video-progress]');
+  const progressBar = modal?.querySelector('[data-video-progress-bar]');
+  const timeLabel = modal?.querySelector('[data-video-time]');
+  const playPauseButton = modal?.querySelector('[data-video-play-pause]');
+  const playPauseIcon = modal?.querySelector('[data-video-play-pause-icon]');
+  const muteButton = modal?.querySelector('[data-video-mute]');
+  const muteIcon = modal?.querySelector('[data-video-mute-icon]');
+  const fullscreenButton = modal?.querySelector('[data-video-fullscreen]');
+  const thumbsPrevButton = modal?.querySelector('[data-thumbs-prev]');
+  const thumbsNextButton = modal?.querySelector('[data-thumbs-next]');
 
-  if (modal && frame && title) {
-    const openModal = (url, label) => {
-      frame.setAttribute('src', url);
-      title.textContent = label || 'Lecture video';
-      modal.removeAttribute('hidden');
-      requestAnimationFrame(() => modal.classList.add('is-open'));
-      document.body.classList.add('lock-scroll');
+  const openButtons = document.querySelectorAll('[data-video-open]');
+  const closeButtons = modal?.querySelectorAll('[data-video-close]') ?? [];
+  const prevButton = modal?.querySelector('[data-prev-video]');
+  const nextButton = modal?.querySelector('[data-next-video]');
+  const shareButton = modal?.querySelector('[data-share-current]');
+
+  let currentIndex = 0;
+  let player;
+  let isPlayerReady = false;
+  let syncTimer;
+
+  const extractYoutubeId = (url) => {
+    const match = url.match(/embed\/([^?&/]+)/);
+    return match ? match[1] : '';
+  };
+
+  const toEmbedUrl = (id, autoplay) => {
+    const autoplayValue = autoplay ? '1' : '0';
+    return `https://www.youtube.com/embed/${id}?autoplay=${autoplayValue}&enablejsapi=1&playsinline=1&rel=0&modestbranding=1`;
+  };
+
+  const formatTime = (seconds) => {
+    if (!Number.isFinite(seconds) || seconds < 0) {
+      return '00:00';
+    }
+
+    const minutes = Math.floor(seconds / 60)
+      .toString()
+      .padStart(2, '0');
+    const secs = Math.floor(seconds % 60)
+      .toString()
+      .padStart(2, '0');
+    return `${minutes}:${secs}`;
+  };
+
+  const updatePlayPauseIcon = (isPlaying) => {
+    if (!(playPauseButton instanceof HTMLButtonElement) || !(playPauseIcon instanceof SVGElement)) {
+      return;
+    }
+
+    playPauseButton.setAttribute('aria-label', isPlaying ? 'Mettre en pause' : 'Lire la video');
+    playPauseIcon.innerHTML = isPlaying
+      ? '<rect x="6" y="5" width="4" height="14"></rect><rect x="14" y="5" width="4" height="14"></rect>'
+      : '<path d="M8 5v14l11-7z"></path>';
+  };
+
+  const updateMuteIcon = (isMuted) => {
+    if (!(muteButton instanceof HTMLButtonElement) || !(muteIcon instanceof SVGElement)) {
+      return;
+    }
+
+    muteButton.setAttribute('aria-label', isMuted ? 'Activer le son' : 'Couper le son');
+    muteIcon.innerHTML = isMuted
+      ? '<path d="M11 5L6 9H3v6h3l5 4V5z"></path><path d="M19 9l-6 6"></path><path d="M13 9l6 6"></path>'
+      : '<path d="M11 5L6 9H3v6h3l5 4V5z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18 6a8.5 8.5 0 0 1 0 12"></path>';
+  };
+
+  const syncTimeline = () => {
+    if (!isPlayerReady || !player || typeof player.getCurrentTime !== 'function') {
+      return;
+    }
+
+    const duration = player.getDuration?.() || 0;
+    const currentTime = player.getCurrentTime?.() || 0;
+    const percent = duration > 0 ? (currentTime / duration) * 100 : 0;
+
+    if (progressBar instanceof HTMLElement) {
+      progressBar.style.width = `${Math.min(100, Math.max(0, percent))}%`;
+    }
+
+    if (timeLabel instanceof HTMLElement) {
+      timeLabel.textContent = `${formatTime(currentTime)} / ${formatTime(duration)}`;
+    }
+  };
+
+  const stopSyncTimeline = () => {
+    if (syncTimer) {
+      window.clearInterval(syncTimer);
+      syncTimer = undefined;
+    }
+  };
+
+  const startSyncTimeline = () => {
+    stopSyncTimeline();
+    syncTimer = window.setInterval(syncTimeline, 250);
+  };
+
+  const updateThumbButtons = () => {
+    if (!(thumbs instanceof HTMLElement)) {
+      return;
+    }
+
+    const canGoPrev = thumbs.scrollLeft > 0;
+    const canGoNext = thumbs.scrollLeft + thumbs.clientWidth < thumbs.scrollWidth - 2;
+
+    if (thumbsPrevButton instanceof HTMLButtonElement) {
+      thumbsPrevButton.disabled = !canGoPrev;
+    }
+
+    if (thumbsNextButton instanceof HTMLButtonElement) {
+      thumbsNextButton.disabled = !canGoNext;
+    }
+  };
+
+  const scrollThumbsBy = (direction) => {
+    if (!(thumbs instanceof HTMLElement)) {
+      return;
+    }
+
+    const amount = Math.max(180, Math.floor(thumbs.clientWidth * 0.6)) * direction;
+    thumbs.scrollBy({ left: amount, behavior: 'smooth' });
+    window.setTimeout(updateThumbButtons, 220);
+  };
+
+  if (
+    modal instanceof HTMLElement &&
+    frame instanceof HTMLIFrameElement &&
+    poster instanceof HTMLElement &&
+    hero instanceof HTMLElement &&
+    brand instanceof HTMLElement &&
+    heroTitle instanceof HTMLElement &&
+    panelTitle instanceof HTMLElement &&
+    panelMeta instanceof HTMLElement &&
+    panelDescription instanceof HTMLElement &&
+    thumbs instanceof HTMLElement &&
+    infoColumn instanceof HTMLElement
+  ) {
+    const stopEmbeddedPlayback = () => {
+      if (isPlayerReady && player) {
+        try {
+          player.pauseVideo?.();
+          player.stopVideo?.();
+          player.seekTo?.(0, true);
+        } catch {
+          // Ignore API errors and use iframe message fallback below.
+        }
+      }
+
+      if (frame.contentWindow) {
+        const commands = ['pauseVideo', 'stopVideo'];
+        commands.forEach((func) => {
+          frame.contentWindow?.postMessage(
+            JSON.stringify({ event: 'command', func, args: [] }),
+            '*'
+          );
+        });
+      }
     };
 
-    const closeModal = () => {
+    const onPlayerStateChange = (event) => {
+      const state = event?.data;
+      const YT = window.YT;
+
+      if (!YT?.PlayerState) {
+        return;
+      }
+
+      if (state === YT.PlayerState.PLAYING) {
+        hero.style.display = 'none';
+        poster.style.opacity = '0';
+        videoShell?.classList.add('is-playing');
+        updatePlayPauseIcon(true);
+        startSyncTimeline();
+        return;
+      }
+
+      if (state === YT.PlayerState.PAUSED) {
+        videoShell?.classList.remove('is-playing');
+        updatePlayPauseIcon(false);
+        syncTimeline();
+        return;
+      }
+
+      if (state === YT.PlayerState.ENDED) {
+        videoShell?.classList.remove('is-playing');
+        hero.style.display = 'flex';
+        poster.style.opacity = '1';
+        updatePlayPauseIcon(false);
+        syncTimeline();
+      }
+    };
+
+    const ensureYouTubePlayer = () => {
+      if (!list.length) {
+        return;
+      }
+
+      const initialId = extractYoutubeId(list[currentIndex].src) || extractYoutubeId(list[0].src);
+
+      if (!initialId) {
+        return;
+      }
+
+      const createPlayer = () => {
+        player = new window.YT.Player(frame, {
+          videoId: initialId,
+          playerVars: {
+            autoplay: 0,
+            controls: 0,
+            rel: 0,
+            modestbranding: 1,
+            playsinline: 1,
+          },
+          events: {
+            onReady: () => {
+              isPlayerReady = true;
+              updatePlayPauseIcon(false);
+              updateMuteIcon(false);
+              syncTimeline();
+            },
+            onStateChange: onPlayerStateChange,
+          },
+        });
+      };
+
+      if (window.YT?.Player) {
+        createPlayer();
+        return;
+      }
+
+      const scriptTag = document.createElement('script');
+      scriptTag.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(scriptTag);
+
+      const previousCallback = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        if (typeof previousCallback === 'function') {
+          previousCallback();
+        }
+        createPlayer();
+      };
+    };
+
+    const closeModal = async () => {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen?.();
+      }
+
       modal.classList.remove('is-open');
       document.body.classList.remove('lock-scroll');
+      videoShell?.classList.remove('is-playing');
+      hero.style.display = 'flex';
+      poster.style.opacity = '1';
+      updatePlayPauseIcon(false);
+      stopSyncTimeline();
+      stopEmbeddedPlayback();
+
       setTimeout(() => {
+        const currentVideoId = extractYoutubeId(list[currentIndex]?.src || '');
+        if (currentVideoId) {
+          frame.setAttribute('src', toEmbedUrl(currentVideoId, false));
+        }
         modal.setAttribute('hidden', 'hidden');
-        frame.setAttribute('src', '');
       }, 180);
     };
 
+    const renderThumbs = () => {
+      thumbs.innerHTML = list
+        .map((item, index) => {
+          const activeClass = index === currentIndex ? 'is-active' : '';
+          return `
+            <button class="thumb ${activeClass}" data-thumb-index="${index}" aria-label="Afficher ${item.heroTitle}">
+              <img src="${item.thumb}" alt="Apercu ${item.heroTitle}" loading="lazy">
+              <span class="thumb-label">${item.heroTitle}</span>
+            </button>
+          `;
+        })
+        .join('');
+
+      thumbs.querySelectorAll('[data-thumb-index]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const index = Number(button.getAttribute('data-thumb-index'));
+          if (Number.isFinite(index)) {
+            loadVideo(index, false);
+          }
+        });
+      });
+
+      updateThumbButtons();
+
+      const activeThumb = thumbs.querySelector('.thumb.is-active');
+      if (activeThumb instanceof HTMLElement) {
+        activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    };
+
+    const loadVideo = (index, autoplay) => {
+      if (!list.length) {
+        return;
+      }
+
+      currentIndex = (index + list.length) % list.length;
+      const item = list[currentIndex];
+
+      brand.textContent = item.brand;
+      heroTitle.textContent = item.heroTitle.toUpperCase();
+      panelTitle.textContent = item.panelTitle.toUpperCase();
+      panelMeta.textContent = item.meta;
+      panelDescription.textContent = item.description;
+      poster.style.backgroundImage = `url('${item.poster}')`;
+      renderThumbs();
+      infoColumn.scrollTop = 0;
+      progressBar && (progressBar.style.width = '0%');
+      timeLabel && (timeLabel.textContent = '00:00 / 00:00');
+
+      const videoId = extractYoutubeId(item.src);
+      if (!videoId) {
+        return;
+      }
+
+      if (!isPlayerReady || !player) {
+        frame.setAttribute('src', toEmbedUrl(videoId, autoplay));
+        if (autoplay) {
+          hero.style.display = 'none';
+          poster.style.opacity = '0';
+        } else {
+          hero.style.display = 'flex';
+          poster.style.opacity = '1';
+        }
+        return;
+      }
+
+      player.cueVideoById(videoId);
+
+      if (autoplay) {
+        player.playVideo();
+        hero.style.display = 'none';
+        poster.style.opacity = '0';
+        videoShell?.classList.add('is-playing');
+        updatePlayPauseIcon(true);
+        startSyncTimeline();
+      } else {
+        player.pauseVideo();
+        hero.style.display = 'flex';
+        poster.style.opacity = '1';
+        videoShell?.classList.remove('is-playing');
+        updatePlayPauseIcon(false);
+      }
+
+      updateMuteIcon(Boolean(player.isMuted?.()));
+    };
+
+    const openModal = (index) => {
+      modal.removeAttribute('hidden');
+      requestAnimationFrame(() => modal.classList.add('is-open'));
+      document.body.classList.add('lock-scroll');
+      loadVideo(index, false);
+    };
+
+    ensureYouTubePlayer();
+
     openButtons.forEach((button) => {
       button.addEventListener('click', () => {
-        const url = button.getAttribute('data-video-url') || '';
-        const label = button.getAttribute('data-video-title') || 'Lecture video';
-        if (url) openModal(url, label);
+        const slug = button.getAttribute('data-video-slug') || '';
+        const index = bySlug.has(slug) ? bySlug.get(slug) : 0;
+        openModal(index ?? 0);
       });
     });
+
+    if (playButton instanceof HTMLButtonElement) {
+      playButton.addEventListener('click', () => {
+        loadVideo(currentIndex, true);
+      });
+    }
+
+    if (playPauseButton instanceof HTMLButtonElement) {
+      playPauseButton.addEventListener('click', () => {
+        if (!isPlayerReady || !player) {
+          return;
+        }
+
+        const YT = window.YT;
+        const state = player.getPlayerState?.();
+        const isPlaying = YT?.PlayerState ? state === YT.PlayerState.PLAYING : false;
+
+        if (isPlaying) {
+          player.pauseVideo();
+          updatePlayPauseIcon(false);
+        } else {
+          player.playVideo();
+          hero.style.display = 'none';
+          poster.style.opacity = '0';
+          updatePlayPauseIcon(true);
+          startSyncTimeline();
+        }
+      });
+    }
+
+    if (muteButton instanceof HTMLButtonElement) {
+      muteButton.addEventListener('click', () => {
+        if (!isPlayerReady || !player) {
+          return;
+        }
+
+        if (player.isMuted?.()) {
+          player.unMute();
+          updateMuteIcon(false);
+        } else {
+          player.mute();
+          updateMuteIcon(true);
+        }
+      });
+    }
+
+    if (progress instanceof HTMLElement) {
+      progress.addEventListener('click', (event) => {
+        if (!isPlayerReady || !player) {
+          return;
+        }
+
+        const rect = progress.getBoundingClientRect();
+        const ratio = (event.clientX - rect.left) / rect.width;
+        const duration = player.getDuration?.() || 0;
+        const target = Math.max(0, Math.min(duration, ratio * duration));
+        player.seekTo(target, true);
+        syncTimeline();
+      });
+    }
+
+    if (fullscreenButton instanceof HTMLButtonElement) {
+      fullscreenButton.addEventListener('click', async () => {
+        const stage = modal.querySelector('.video-stage');
+        if (!(stage instanceof HTMLElement)) {
+          return;
+        }
+
+        if (!document.fullscreenElement) {
+          await stage.requestFullscreen?.();
+        } else {
+          await document.exitFullscreen?.();
+        }
+      });
+    }
+
+    if (prevButton instanceof HTMLButtonElement) {
+      prevButton.addEventListener('click', () => loadVideo(currentIndex - 1, false));
+    }
+
+    if (nextButton instanceof HTMLButtonElement) {
+      nextButton.addEventListener('click', () => loadVideo(currentIndex + 1, false));
+    }
+
+    if (thumbsPrevButton instanceof HTMLButtonElement) {
+      thumbsPrevButton.addEventListener('click', () => scrollThumbsBy(-1));
+    }
+
+    if (thumbsNextButton instanceof HTMLButtonElement) {
+      thumbsNextButton.addEventListener('click', () => scrollThumbsBy(1));
+    }
+
+    thumbs.addEventListener('scroll', updateThumbButtons);
+    thumbs.addEventListener(
+      'wheel',
+      (event) => {
+        if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) {
+          return;
+        }
+
+        event.preventDefault();
+        thumbs.scrollBy({ left: event.deltaY, behavior: 'smooth' });
+      },
+      { passive: false }
+    );
 
     closeButtons.forEach((button) => button.addEventListener('click', closeModal));
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+      if (!modal.classList.contains('is-open')) {
+        return;
+      }
+
+      if (event.key === 'Escape') {
         closeModal();
+        return;
+      }
+
+      if (event.key === 'ArrowLeft' && list.length > 1) {
+        loadVideo(currentIndex - 1, false);
+        return;
+      }
+
+      if (event.key === 'ArrowRight' && list.length > 1) {
+        loadVideo(currentIndex + 1, false);
       }
     });
+
+    if (shareButton instanceof HTMLButtonElement) {
+      shareButton.addEventListener('click', async () => {
+        const currentVideo = list[currentIndex];
+
+        if (!currentVideo) {
+          return;
+        }
+
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: currentVideo.panelTitle,
+              text: currentVideo.description,
+              url: window.location.href,
+            });
+            return;
+          } catch {
+            return;
+          }
+        }
+
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+        } catch {
+          return;
+        }
+      });
+    }
   }
 </script>
+
+<style is:global>
+  .video-modal-overlay-player[hidden] {
+    display: none;
+  }
+
+  .video-modal-overlay-player {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+  }
+
+  .overlay-player {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 16px 18px 18px;
+    color: #f4f0ea;
+    font-family: var(--sans);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 180ms cubic-bezier(0.16, 1, 0.3, 1), transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .overlay-player button {
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .video-modal-overlay-player.is-open .overlay-player {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 48px;
+    margin-bottom: 18px;
+    flex: 0 0 auto;
+  }
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #f4f0ea;
+  }
+
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #f4f0ea;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.2rem, 1rem + 0.4vw, 1.55rem);
+    transition: opacity 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .share-btn:hover,
+  .close-btn:hover,
+  .chevron:hover,
+  .play-cta:hover {
+    opacity: 0.82;
+  }
+
+  .close-btn {
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.68);
+    transition: opacity 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .stage-wrap {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr) 72px;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .chevron {
+    width: 100%;
+    height: 100%;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.78);
+    transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), opacity 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .chevron:hover {
+    transform: scale(1.04);
+  }
+
+  .content {
+    min-width: 0;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 2.15fr) minmax(340px, 0.9fr);
+    gap: 28px;
+    align-items: stretch;
+    height: 100%;
+  }
+
+  .media-column,
+  .info-column {
+    min-height: 0;
+    height: 100%;
+  }
+
+  .media-column {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-width: 0;
+  }
+
+  .video-shell {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    background: #050505;
+    overflow: hidden;
+  }
+
+  .video-shell.is-playing .controls,
+  .video-shell:hover .controls {
+    opacity: 1;
+  }
+
+  .video-stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+  }
+
+  .video-stage iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #000;
+  }
+
+  .poster {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 220ms ease;
+  }
+
+  .poster::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.76), rgba(0, 0, 0, 0.38));
+  }
+
+  .hero-center {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 32px;
+    pointer-events: none;
+  }
+
+  .brand {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.35rem, 1rem + 0.45vw, 1.7rem);
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 10px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+  }
+
+  .hero-title {
+    font-size: clamp(2.7rem, 1.7rem + 2.3vw, 5rem);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 0.98;
+    margin-bottom: 20px;
+    text-shadow: 0 4px 22px rgba(0, 0, 0, 0.85);
+    max-width: 18ch;
+    color: #f4f0ea;
+  }
+
+  .play-cta {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.2rem, 1rem + 0.35vw, 1.45rem);
+    color: #fff;
+  }
+
+  .play-ring {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.95);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .controls {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    padding: 20px 18px 14px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.58), transparent);
+    opacity: 0;
+    transition: opacity 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .progress {
+    height: 2px;
+    background: rgba(255, 255, 255, 0.28);
+    margin-bottom: 10px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .progress-bar {
+    width: 0;
+    height: 100%;
+    background: #fff;
+  }
+
+  .controls-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .controls-left,
+  .controls-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .icon-btn {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .time {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+
+  .thumbs-row {
+    display: grid;
+    grid-template-columns: 44px 1fr 44px;
+    align-items: stretch;
+    gap: 8px;
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  .thumbs-nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.78);
+    background: rgba(9, 9, 9, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+    transition: opacity 180ms cubic-bezier(0.16, 1, 0.3, 1), transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .thumbs-nav:hover:not(:disabled) {
+    transform: scale(1.04);
+  }
+
+  .thumbs-nav:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  .thumbs {
+    flex: 0 0 auto;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    padding: 4px 2px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .thumbs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .thumb {
+    position: relative;
+    aspect-ratio: 1.7 / 1;
+    min-width: min(260px, 23vw);
+    overflow: hidden;
+    text-align: left;
+    border-radius: 14px;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: #0a0a0a;
+  }
+
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+    transition: opacity 180ms cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .thumb:hover img,
+  .thumb.is-active img {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+
+  .thumb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.25));
+  }
+
+  .thumb.is-active::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    z-index: 2;
+  }
+
+  .thumb-label {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 10px;
+    z-index: 2;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.1;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .info-column {
+    overflow-y: auto;
+    padding-right: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.24) transparent;
+  }
+
+  .info-column::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .info-column::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.24);
+  }
+
+  .info-column::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .panel-inner {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 6px;
+  }
+
+  .panel-title {
+    font-size: clamp(2.05rem, 1.4rem + 1.25vw, 3.2rem);
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    line-height: 0.98;
+    margin-bottom: 26px;
+    max-width: 10ch;
+    color: #f4f0ea;
+  }
+
+  .panel-meta {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.68);
+    margin-bottom: 26px;
+  }
+
+  .panel-description {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.2rem, 1rem + 0.35vw, 1.55rem);
+    line-height: 1.48;
+    color: rgba(255, 255, 255, 0.96);
+    margin-bottom: 42px;
+  }
+
+  @media (max-width: 1100px) {
+    .overlay-player {
+      overflow-y: auto;
+    }
+
+    .stage-wrap {
+      grid-template-columns: 52px 1fr 52px;
+      min-height: auto;
+    }
+
+    .content {
+      height: auto;
+      min-height: auto;
+      grid-template-columns: 1fr;
+    }
+
+    .info-column {
+      height: auto;
+      max-height: none;
+      overflow: visible;
+    }
+
+    .video-shell {
+      min-height: 56vh;
+    }
+
+    .thumb {
+      min-width: min(300px, 44vw);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .overlay-player {
+      padding: 10px 10px 12px;
+    }
+
+    .stage-wrap {
+      grid-template-columns: 42px 1fr 42px;
+      gap: 6px;
+    }
+
+    .content {
+      gap: 16px;
+    }
+
+    .thumbs-row {
+      grid-template-columns: 36px 1fr 36px;
+      gap: 6px;
+    }
+
+    .thumb {
+      min-width: 68vw;
+    }
+
+    .panel-title,
+    .hero-title {
+      max-width: none;
+    }
+  }
+</style>

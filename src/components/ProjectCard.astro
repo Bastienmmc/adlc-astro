@@ -19,7 +19,14 @@ const { project } = Astro.props;
     <div class="project-card-foot">
       <span class="project-tag">{categoryLabels[project.category]}</span>
       {project.tags?.includes('drone') && <span class="project-tag">drone</span>}
-      <button data-video-open data-video-url={project.videoUrl} data-video-title={project.title}>Lire la video</button>
+      <button
+        data-video-open
+        data-video-slug={project.slug}
+        data-video-url={project.videoUrl}
+        data-video-title={project.title}
+      >
+        Lire la video
+      </button>
     </div>
   </div>
 </article>
