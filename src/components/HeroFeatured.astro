@@ -8,20 +8,20 @@ interface Props {
 const { project } = Astro.props;
 ---
 
-<section class="hero-featured reveal" style={`--hero-image: url('${project.thumbnail}')`}>
+<section id="dernieres-realisations" class="hero-featured reveal" style={`--hero-image: url('${project.thumbnail}')`}>
   <div class="hero-overlay">
     <div class="container hero-content">
-      <p class="eyebrow">Realisations</p>
-      <h1>Des films penses pour durer.</h1>
+      <p class="eyebrow">Dernieres realisations</p>
+      <h1>{project.title}</h1>
       <p>
-        Films d entreprise, portraits, reportages et projets documentaires realises avec une attention
-        particuliere portee au rythme, au regard et a la qualite d image.
+        Une realisation recente mise en avant pour ouvrir la visite, avec la meme attention portee au
+        rythme, au regard et a la qualite d image sur l ensemble du portfolio.
       </p>
       <div class="hero-actions">
         <button class="btn btn-primary" data-video-open data-video-url={project.videoUrl} data-video-title={project.title}>
           Lire la video
         </button>
-        <a class="btn btn-secondary" href="#realisations">Voir les realisations</a>
+        <a class="btn btn-secondary" href="#a-propos">Voir plus bas</a>
       </div>
     </div>
   </div>

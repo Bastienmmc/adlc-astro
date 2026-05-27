@@ -1,0 +1,38 @@
+---
+interface Props {
+  src?: string;
+  poster?: string;
+  className?: string;
+  ariaLabel?: string;
+}
+
+const {
+  src,
+  poster,
+  className = '',
+  ariaLabel = 'Extrait video'
+} = Astro.props;
+---
+
+<div class={('video-loop ' + className).trim()}>
+  {
+    src ? (
+      <video
+        src={src}
+        poster={poster}
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        aria-label={ariaLabel}
+      >
+        {poster && <img src={poster} alt={ariaLabel} loading="lazy" />}
+      </video>
+    ) : poster ? (
+      <img src={poster} alt={ariaLabel} loading="lazy" />
+    ) : (
+      <div class="video-loop-fallback" aria-hidden="true"></div>
+    )
+  }
+</div>

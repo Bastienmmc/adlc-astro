@@ -1,0 +1,122 @@
+---
+import type { Project } from '../data/projects';
+
+interface Props {
+  projects: Project[];
+  initialSlug: string;
+}
+
+const { projects, initialSlug } = Astro.props;
+const initialProject = projects.find((project) => project.slug === initialSlug) ?? projects[0];
+---
+
+<section id="lecteur" class="section video-gallery-section reveal">
+  <div class="container">
+    <div class="section-heading">
+      <p class="eyebrow">Lecture</p>
+      <h2>Un lecteur video simple et editorial.</h2>
+      <p>Visionnez un projet, lisez son contexte, puis passez facilement a un autre film.</p>
+    </div>
+
+    <div class="video-gallery-main">
+      <div class="video-gallery-player-wrap">
+        <iframe
+          data-gallery-frame
+          src={initialProject.videoUrl}
+          title={`Lecture video ${initialProject.title}`}
+          frameborder="0"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+
+      <aside class="video-gallery-meta" data-gallery-meta>
+        <p class="eyebrow" data-gallery-type>{initialProject.typeLabel}</p>
+        <h3 data-gallery-title>{initialProject.title}</h3>
+        <p data-gallery-description>{initialProject.description}</p>
+        <div class="video-gallery-infos">
+          <p><strong>Annee:</strong> <span data-gallery-year>{initialProject.year}</span></p>
+          <p><strong>Contexte:</strong> <span data-gallery-context>{initialProject.context ?? 'Non precise'}</span></p>
+          <p><strong>Role:</strong> <span data-gallery-role>{initialProject.role ?? 'Realisation complete'}</span></p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="video-gallery-cards" data-gallery-cards>
+      {
+        projects.map((project, index) => (
+          <button
+            class={`video-gallery-card ${project.slug === initialProject.slug ? 'is-active' : ''}`}
+            data-gallery-card
+            data-gallery-slug={project.slug}
+            type="button"
+            style={`animation-delay:${index * 0.05}s`}
+          >
+            <img src={project.thumbnail} alt={`Vignette ${project.title}`} loading="lazy" />
+            <span class="video-gallery-card-text">
+              <strong>{project.title}</strong>
+              <small>{project.typeLabel} · {project.year}</small>
+            </span>
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ projects, initialSlug }}>
+  const list = Array.isArray(projects) ? projects : [];
+  const bySlug = new Map(list.map((item) => [item.slug, item]));
+
+  const frame = document.querySelector('[data-gallery-frame]');
+  const title = document.querySelector('[data-gallery-title]');
+  const type = document.querySelector('[data-gallery-type]');
+  const description = document.querySelector('[data-gallery-description]');
+  const year = document.querySelector('[data-gallery-year]');
+  const context = document.querySelector('[data-gallery-context]');
+  const role = document.querySelector('[data-gallery-role]');
+  const cards = document.querySelectorAll('[data-gallery-card]');
+
+  const setActiveCard = (slug) => {
+    cards.forEach((card) => {
+      card.classList.toggle('is-active', card.getAttribute('data-gallery-slug') === slug);
+    });
+  };
+
+  const selectProject = (slug) => {
+    const project = bySlug.get(slug);
+    if (!project || !frame || !title || !type || !description || !year || !context || !role) return;
+
+    frame.setAttribute('src', project.videoUrl);
+    frame.setAttribute('title', 'Lecture video ' + project.title);
+    title.textContent = project.title;
+    type.textContent = project.typeLabel;
+    description.textContent = project.description;
+    year.textContent = project.year;
+    context.textContent = project.context || 'Non precise';
+    role.textContent = project.role || 'Realisation complete';
+    setActiveCard(slug);
+  };
+
+  cards.forEach((card) => {
+    card.addEventListener('click', () => {
+      const slug = card.getAttribute('data-gallery-slug');
+      if (slug) selectProject(slug);
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const trigger = target.closest('[data-gallery-select]');
+    if (!trigger) return;
+
+    const slug = trigger.getAttribute('data-gallery-select');
+    if (slug) selectProject(slug);
+  });
+
+  if (initialSlug) {
+    selectProject(initialSlug);
+  }
+</script>

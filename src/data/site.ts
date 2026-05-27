@@ -5,11 +5,10 @@ export const site = {
 };
 
 export const mainNav = [
-  { label: 'Realisations', href: '/' },
-  { label: 'Drone', href: '/drone' },
-  { label: 'Documentaire', href: '/documentaire' },
-  { label: 'A propos', href: '/a-propos' },
-  { label: 'Contact', href: '/contact' }
+  { label: 'Films de marque', href: '/#films-marque' },
+  { label: 'Portraits & recits', href: '/#portraits-recits' },
+  { label: 'Culture & sport', href: '/#culture-sport' },
+  { label: 'Contact', href: '/#contact' }
 ];
 
 export const secondaryNav = [
@@ -19,27 +18,21 @@ export const secondaryNav = [
 
 export const categoryBlocs = [
   {
-    title: 'Interview',
-    key: 'interview',
+    title: 'Films de marque',
+    key: 'films-marque',
     description:
-      'Portraits, temoignages et prises de parole, avec une attention portee a la presence, au rythme et a la sincerite.'
+      'Films pensés pour porter une image de marque, rendre une activite lisible et affirmer un positionnement.'
   },
   {
-    title: 'Corporate',
-    key: 'corporate',
+    title: 'Portraits & recits',
+    key: 'portraits-recits',
     description:
-      'Films pour entreprises, structures et institutions, penses pour presenter une activite, un savoir-faire ou une equipe avec clarte.'
+      'Portraits, temoignages et formes plus narratives qui laissent de la place a une parole, un parcours ou un regard.'
   },
   {
-    title: 'Reportage',
-    key: 'reportage',
+    title: 'Culture & sport',
+    key: 'culture-sport',
     description:
-      'Captations et immersions sur le terrain, pour rendre compte d un evenement, d un lieu, d une action ou d une dynamique collective.'
-  },
-  {
-    title: 'Documentaire',
-    key: 'documentaire',
-    description:
-      'Projets plus narratifs, ou la mise en scene, la duree et le regard prennent davantage de place.'
+      'Reportages et captations sur le terrain pour suivre un evenement, un lieu, une dynamique ou une pratique.'
   }
 ] as const;

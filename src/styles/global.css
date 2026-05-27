@@ -39,6 +39,11 @@ body {
   line-height: 1.6;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+}
+
 body.lock-scroll {
   overflow: hidden;
 }
@@ -64,6 +69,10 @@ main {
 
 .section {
   padding: clamp(3rem, 7vw, 6.5rem) 0;
+}
+
+[id] {
+  scroll-margin-top: 6rem;
 }
 
 .eyebrow {

@@ -37,5 +37,64 @@ const {
     </main>
     <Footer />
     <VideoModal />
+    <script is:inline>
+      const getScrollOffset = () => {
+        const header = document.querySelector('.site-header');
+        return (header instanceof HTMLElement ? header.offsetHeight : 0) + 16;
+      };
+
+      const scrollToHash = (hash, updateHistory) => {
+        if (!hash) {
+          return;
+        }
+
+        const target = document.querySelector(hash);
+
+        if (!(target instanceof HTMLElement)) {
+          return;
+        }
+
+        const top = target.getBoundingClientRect().top + window.scrollY - getScrollOffset();
+
+        window.scrollTo({ top, behavior: 'smooth' });
+
+        if (updateHistory) {
+          window.history.pushState({}, '', hash);
+        }
+      };
+
+      document.addEventListener('click', (event) => {
+        const target = event.target;
+
+        if (!(target instanceof Element)) {
+          return;
+        }
+
+        const link = target.closest('a[href]');
+
+        if (!(link instanceof HTMLAnchorElement)) {
+          return;
+        }
+
+        const url = new URL(link.href, window.location.href);
+
+        if (url.origin !== window.location.origin || url.pathname !== window.location.pathname || !url.hash) {
+          return;
+        }
+
+        event.preventDefault();
+        scrollToHash(url.hash, true);
+      });
+
+      window.addEventListener('load', () => {
+        if (!window.location.hash) {
+          return;
+        }
+
+        window.requestAnimationFrame(() => {
+          scrollToHash(window.location.hash, false);
+        });
+      });
+    </script>
   </body>
 </html>

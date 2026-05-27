@@ -3,61 +3,94 @@ import Layout from '../layouts/Layout.astro';
 import HeroFeatured from '../components/HeroFeatured.astro';
 import CategoryNav from '../components/CategoryNav.astro';
 import ProjectSection from '../components/ProjectSection.astro';
-import { byCategory, featuredProject } from '../data/projects';
+import { byCategory, byCategories, featuredProject } from '../data/projects';
+import { site } from '../data/site';
 ---
 
 <Layout
-  title="Realisations - Au-dela du cadre"
-  description="Portfolio video freelance: interview, corporate, reportage et documentaire."
+  title="Au-dela du cadre"
+  description="Portfolio video freelance: films de marque, portraits, recits et projets culture & sport."
 >
   <HeroFeatured project={featuredProject} />
 
-  <section class="section">
+  <section id="a-propos" class="section">
     <div class="container copy-block reveal">
-      <h2>Chaque projet demande sa propre forme.</h2>
+      <h2>Une approche sobre, attentive et ancree dans le reel.</h2>
       <p class="intro-text">
-        L idee n est pas de produire des images de plus, mais de construire un film juste, lisible
-        et utile, en restant attentif a ce qu il doit transmettre.
+        Videaste freelance, je realise des films pour des entreprises, associations, institutions et
+        projets plus documentaires, avec une attention particuliere portee a la qualite d image, a la
+        justesse du ton et a la coherence du rendu final.
+      </p>
+      <p>
+        Chaque demande appelle une reponse differente. Certains projets ont besoin d un cadre clair,
+        d une parole bien menee et d une structure efficace. D autres demandent davantage de temps,
+        d ecoute et de souplesse. Dans tous les cas, l enjeu reste le meme : produire un film solide,
+        lisible et fidele a ce qu il doit transmettre.
+      </p>
+      <p>
+        Je travaille avec une approche simple : comprendre le besoin, definir une forme adaptee,
+        tourner de maniere legere et soignee, puis construire un montage precis. Le but n est pas
+        d en faire trop, mais de trouver la bonne distance et le bon rythme.
       </p>
     </div>
   </section>
 
   <CategoryNav />
 
-  <section id="realisations" class="section">
-    <div class="container copy-block reveal">
-      <h2>Une selection de projets realises pour differents besoins.</h2>
-      <p>
-        Une meme attention portee au fond, a la forme et a la coherence de l ensemble.
-      </p>
-    </div>
-  </section>
-
   <ProjectSection
-    id="interview"
-    title="Interview"
-    intro="Portraits et prises de parole, centres sur la presence et la justesse du ton."
-    projects={byCategory('interview')}
-  />
-
-  <ProjectSection
-    id="corporate"
-    title="Corporate"
-    intro="Films clairs et soignes pour presenter activites, equipes et savoir-faire."
+    id="films-marque"
+    title="Films de marque"
+    intro="Films clairs et soignes pour presenter une activite, un savoir-faire ou une equipe avec justesse."
     projects={byCategory('corporate')}
   />
 
   <ProjectSection
-    id="reportage"
-    title="Reportage"
-    intro="Immersions de terrain pour restituer une action, un lieu ou une dynamique collective."
-    projects={byCategory('reportage')}
+    id="portraits-recits"
+    title="Portraits & recits"
+    intro="Portraits, prises de parole et formes plus narratives centres sur la presence, l ecoute et le rythme."
+    projects={byCategories(['interview', 'documentaire'])}
   />
 
   <ProjectSection
-    id="documentaire"
-    title="Documentaire"
-    intro="Formes plus narratives ou la duree, le rythme et le regard prennent de la place."
-    projects={byCategory('documentaire')}
+    id="culture-sport"
+    title="Culture & sport"
+    intro="Immersions de terrain pour suivre un evenement, un lieu, une pratique ou une dynamique collective."
+    projects={byCategory('reportage')}
   />
+
+  <section id="contact" class="section">
+    <div class="container copy-block reveal">
+      <h2>Parlons de votre projet.</h2>
+      <p>
+        Pour un film de marque, un portrait, un recit de terrain ou un projet culture & sport, vous
+        pouvez me contacter par email ou via le formulaire ci-dessous.
+      </p>
+      <p>
+        Decrivez simplement votre besoin, le contexte et ce que vous souhaitez produire. Une reponse
+        vous sera apportee dans les meilleurs delais.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact-panel reveal">
+      <p><strong>Email :</strong> <a href={`mailto:${site.email}`}>{site.email}</a></p>
+      <p><strong>Ville / zone :</strong> {site.location}</p>
+      <form class="form-grid" method="post" action="#">
+        <label>
+          Nom
+          <input type="text" name="name" autocomplete="name" required />
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" autocomplete="email" required />
+        </label>
+        <label>
+          Votre besoin
+          <textarea name="message" rows="6" required></textarea>
+        </label>
+        <button type="submit">Envoyer</button>
+      </form>
+    </div>
+  </section>
 </Layout>
