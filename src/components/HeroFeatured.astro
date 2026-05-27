@@ -1,12 +1,32 @@
 ---
 import type { Project } from '../data/projects';
-import { categoryLabels, projects } from '../data/projects';
+import { categoryLabels, projects as allProjects } from '../data/projects';
 
 interface Props {
-  project: Project;
+  id?: string;
+  title?: string;
+  project?: Project;
+  projects?: Project[];
+  featuredSlug?: string;
 }
 
-const { project } = Astro.props;
+const {
+  id = 'dernieres-realisations',
+  title = 'Dernieres realisations',
+  project,
+  projects,
+  featuredSlug,
+} = Astro.props;
+
+const videosSource = Array.isArray(projects) && projects.length > 0 ? projects : allProjects;
+
+const selectedProject =
+  project ??
+  videosSource.find((item) => item.slug === featuredSlug) ??
+  videosSource.find((item) => item.featuredInCategory) ??
+  videosSource[0];
+
+const instanceId = `${id}-featured`;
 
 const toWatchUrl = (url: string) => {
   const match = url.match(/embed\/([^?&/]+)/);
@@ -17,7 +37,7 @@ const toWatchUrl = (url: string) => {
   return `https://www.youtube.com/watch?v=${match[1]}`;
 };
 
-const heroVideos = projects.map((item) => ({
+const heroVideos = videosSource.map((item) => ({
   slug: item.slug,
   title: item.title,
   description: item.description,
@@ -30,21 +50,21 @@ const heroVideos = projects.map((item) => ({
 ---
 
 <section
-  id="dernieres-realisations"
+  id={id}
   class="hero-featured reveal"
-  style={`--hero-image: url('${project.thumbnail}')`}
-  data-hero-videos-root
+  style={`--hero-image: url('${selectedProject.thumbnail}')`}
+  data-hero-videos-root={instanceId}
 >
   <div class="hero-overlay">
     <div class="container hero-content hero-content-centered">
-      <h1 class="hero-category-label">Dernieres realisations</h1>
+      <h2 class="hero-category-label">{title}</h2>
       <div class="hero-actions">
         <button
           class="play-cta hero-play-cta"
           data-video-open
-          data-video-slug={project.slug}
-          data-video-url={project.videoUrl}
-          data-video-title={project.title}
+          data-video-slug={selectedProject.slug}
+          data-video-url={selectedProject.videoUrl}
+          data-video-title={selectedProject.title}
         >
           <span class="play-ring">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
@@ -78,9 +98,9 @@ const heroVideos = projects.map((item) => ({
             class="hero-videos-tool"
             data-hero-videos-share
             data-share-button
-            data-share-video-url={heroVideos[0]?.watchUrl ?? project.videoUrl}
-            data-share-title={heroVideos[0]?.title ?? project.title}
-            data-share-text={heroVideos[0]?.description ?? project.title}
+            data-share-video-url={heroVideos[0]?.watchUrl ?? selectedProject.videoUrl}
+            data-share-title={heroVideos[0]?.title ?? selectedProject.title}
+            data-share-text={heroVideos[0]?.description ?? selectedProject.title}
             data-share-channel-text="Decouvre toutes les videos"
             aria-label="Partager"
             title="Partager"
@@ -147,8 +167,8 @@ const heroVideos = projects.map((item) => ({
   </div>
 </section>
 
-<script define:vars={{ heroVideos }}>
-  const heroRoot = document.querySelector('[data-hero-videos-root]');
+<script define:vars={{ heroVideos, instanceId }}>
+  const heroRoot = document.querySelector(`[data-hero-videos-root="${instanceId}"]`);
 
   if (heroRoot instanceof HTMLElement) {
     const panel = heroRoot.querySelector('[data-hero-videos-panel]');

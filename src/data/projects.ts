@@ -1,4 +1,4 @@
-export type Category = 'films-de-marque' | 'portraits-recits' | 'culture-sport';
+export type Category = 'corporate' | 'interview' | 'reportage';
 
 export type Project = {
   slug: string;
@@ -10,6 +10,7 @@ export type Project = {
   thumbnail: string;
   videoUrl: string;
   featured?: boolean;
+  featuredInCategory?: boolean;
 };
 
 export const projects: Project[] = [
@@ -23,6 +24,7 @@ export const projects: Project[] = [
     thumbnail: 'https://i.ytimg.com/vi/OtL_iQfxWvU/maxresdefault.jpg',
     videoUrl: 'https://www.youtube.com/embed/OtL_iQfxWvU?autoplay=1',
     featured: true,
+    featuredInCategory: true,
   },
   {
     slug: 'pourquoi-jai-change-de-moto',
@@ -43,6 +45,7 @@ export const projects: Project[] = [
       "Un film plus personnel sur ce qui nourrit l'envie de partir, de filmer et de continuer à faire évoluer le projet.",
     thumbnail: 'https://i.ytimg.com/vi/j0vtMMs8mt4/maxresdefault.jpg',
     videoUrl: 'https://www.youtube.com/embed/j0vtMMs8mt4?autoplay=1',
+    featuredInCategory: true,
   },
   {
     slug: 'ce-qui-me-fait-douter',
@@ -73,6 +76,7 @@ export const projects: Project[] = [
       "Un format plus éditorial, pensé comme un film de découverte et de mise en valeur d'un lieu, d'une ambiance ou d'un univers.",
     thumbnail: 'https://i.ytimg.com/vi/3QTM7xPS5oE/maxresdefault.jpg',
     videoUrl: 'https://www.youtube.com/embed/3QTM7xPS5oE?autoplay=1',
+    featuredInCategory: true,
   }
 ];
 

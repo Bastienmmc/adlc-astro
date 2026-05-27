@@ -2,8 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import HeroFeatured from '../components/HeroFeatured.astro';
 import CategoryNav from '../components/CategoryNav.astro';
-import ProjectSection from '../components/ProjectSection.astro';
-import { byCategory, byCategories, featuredProject } from '../data/projects';
+import { byCategory, featuredProject } from '../data/projects';
 import { site } from '../data/site';
 ---
 
@@ -37,24 +36,21 @@ import { site } from '../data/site';
 
   <CategoryNav />
 
-  <ProjectSection
+  <HeroFeatured
     id="films-marque"
     title="Films de marque"
-    intro="Films clairs et soignes pour presenter une activite, un savoir-faire ou une equipe avec justesse."
     projects={byCategory('corporate')}
   />
 
-  <ProjectSection
+  <HeroFeatured
     id="portraits-recits"
     title="Portraits & recits"
-    intro="Portraits, prises de parole et formes plus narratives centres sur la presence, l ecoute et le rythme."
-    projects={byCategories(['interview', 'documentaire'])}
+    projects={byCategory('interview')}
   />
 
-  <ProjectSection
+  <HeroFeatured
     id="culture-sport"
     title="Culture & sport"
-    intro="Immersions de terrain pour suivre un evenement, un lieu, une pratique ou une dynamique collective."
     projects={byCategory('reportage')}
   />
 
