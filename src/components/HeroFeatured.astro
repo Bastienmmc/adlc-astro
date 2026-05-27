@@ -8,6 +8,8 @@ interface Props {
   project?: Project;
   projects?: Project[];
   featuredSlug?: string;
+  infoDescription?: string;
+  infoImage?: string;
 }
 
 const {
@@ -16,6 +18,8 @@ const {
   project,
   projects,
   featuredSlug,
+  infoDescription,
+  infoImage,
 } = Astro.props;
 
 const videosSource = Array.isArray(projects) && projects.length > 0 ? projects : allProjects;
@@ -47,6 +51,12 @@ const heroVideos = videosSource.map((item) => ({
   watchUrl: toWatchUrl(item.videoUrl),
   thumbnail: item.thumbnail,
 }));
+
+const sectionInfoDescription =
+  infoDescription ??
+  'Cette section rassemble les videos les plus recentes avec un acces direct a la lecture et au partage.';
+
+const sectionInfoImage = infoImage ?? selectedProject.thumbnail;
 ---
 
 <section
@@ -120,48 +130,59 @@ const heroVideos = videosSource.map((item) => ({
         </button>
       </div>
 
-      <div class="container">
-        <div class="hero-videos-info" data-hero-videos-info-panel hidden>
-          <p>
-            Cette section rassemble toutes les videos publiees. Utilise la recherche pour filtrer puis lance
-            rapidement la lecture, ou partage la video courante.
-          </p>
-        </div>
-      </div>
     </div>
 
-    <div class="hero-videos-panel" data-hero-videos-panel aria-hidden="true">
-      <div class="hero-videos-inner">
-        <div class="hero-videos-list" data-hero-videos-list>
-          {
-            heroVideos.map((item) => (
-              <article
-                class="hero-videos-item is-visible"
-                data-hero-video-item
-                data-slug={item.slug}
-                data-search={`${item.title} ${item.category} ${item.year}`.toLowerCase()}
-              >
-                <img src={item.thumbnail} alt={item.title} loading="lazy" />
-                <div class="hero-videos-item-overlay">
-                  <h3 class="hero-videos-title">{item.title}</h3>
-                  <button
-                    class="hero-videos-read hero-videos-rect-btn"
-                    type="button"
-                    data-video-open
-                    data-video-slug={item.slug}
-                    data-video-url={item.videoUrl}
-                    data-video-title={item.title}
-                  >
-                    <span class="play-ring" aria-hidden="true">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
-                    </span>
-                    <span>Lire la video</span>
-                  </button>
-                </div>
-              </article>
-            ))
-          }
+    <div class="hero-info-modal" data-hero-info-modal aria-hidden="true">
+      <button class="hero-info-modal-backdrop" data-hero-info-close aria-label="Fermer"></button>
+      <article class="hero-info-modal-dialog" role="dialog" aria-modal="true" aria-labelledby={`hero-info-title-${instanceId}`}>
+        <button class="hero-info-modal-close" data-hero-info-close aria-label="Fermer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+
+        <div class="hero-info-modal-media">
+          <img src={sectionInfoImage} alt={title} loading="lazy" />
         </div>
+
+        <div class="hero-info-modal-content">
+          <h3 id={`hero-info-title-${instanceId}`}>{title}</h3>
+          <p class="hero-info-modal-count">{heroVideos.length} videos</p>
+          <p class="hero-info-modal-description">{sectionInfoDescription}</p>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="hero-videos-panel" data-hero-videos-panel aria-hidden="true">
+    <div class="hero-videos-inner">
+      <div class="hero-videos-list" data-hero-videos-list>
+        {
+          heroVideos.map((item) => (
+            <article
+              class="hero-videos-item is-visible"
+              data-hero-video-item
+              data-slug={item.slug}
+              data-search={`${item.title} ${item.category} ${item.year}`.toLowerCase()}
+            >
+              <img src={item.thumbnail} alt={item.title} loading="lazy" />
+              <div class="hero-videos-item-overlay">
+                <h3 class="hero-videos-title">{item.title}</h3>
+                <button
+                  class="hero-videos-read hero-videos-rect-btn"
+                  type="button"
+                  data-video-open
+                  data-video-slug={item.slug}
+                  data-video-url={item.videoUrl}
+                  data-video-title={item.title}
+                >
+                  <span class="play-ring" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
+                  </span>
+                  <span>Lire la video</span>
+                </button>
+              </div>
+            </article>
+          ))
+        }
       </div>
     </div>
   </div>
@@ -175,7 +196,8 @@ const heroVideos = videosSource.map((item) => ({
     const openButton = heroRoot.querySelector('[data-hero-videos-toggle]');
     const closeButtons = heroRoot.querySelectorAll('[data-hero-videos-close]');
     const infoButton = heroRoot.querySelector('[data-hero-videos-info]');
-    const infoPanel = heroRoot.querySelector('[data-hero-videos-info-panel]');
+    const infoModal = heroRoot.querySelector('[data-hero-info-modal]');
+    const infoCloseButtons = heroRoot.querySelectorAll('[data-hero-info-close]');
     const searchWrap = heroRoot.querySelector('[data-hero-search-wrap]');
     const searchInput = heroRoot.querySelector('[data-hero-videos-search]');
     const shareButton = heroRoot.querySelector('[data-hero-videos-share]');
@@ -214,7 +236,18 @@ const heroVideos = videosSource.map((item) => ({
 
       if (!nextOpen) {
         setSearchActive(false);
+        if (infoModal instanceof HTMLElement) {
+          infoModal.setAttribute('aria-hidden', 'true');
+        }
       }
+    };
+
+    const setInfoModalOpen = (nextOpen) => {
+      if (!(infoModal instanceof HTMLElement)) {
+        return;
+      }
+
+      infoModal.setAttribute('aria-hidden', nextOpen ? 'false' : 'true');
     };
 
     const updateList = () => {
@@ -256,13 +289,19 @@ const heroVideos = videosSource.map((item) => ({
       }
     });
 
-    if (infoButton instanceof HTMLButtonElement && infoPanel instanceof HTMLElement) {
+    if (infoButton instanceof HTMLButtonElement) {
       infoButton.addEventListener('click', () => {
-        const shouldShow = infoPanel.hasAttribute('hidden');
-        infoPanel.toggleAttribute('hidden', !shouldShow);
-        infoButton.classList.toggle('is-active', shouldShow);
+        setInfoModalOpen(true);
       });
     }
+
+    infoCloseButtons.forEach((button) => {
+      if (button instanceof HTMLElement) {
+        button.addEventListener('click', () => {
+          setInfoModalOpen(false);
+        });
+      }
+    });
 
     if (searchInput instanceof HTMLInputElement) {
       searchInput.addEventListener('input', updateList);
@@ -304,7 +343,16 @@ const heroVideos = videosSource.map((item) => ({
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && panel instanceof HTMLElement && panel.getAttribute('aria-hidden') === 'false') {
+      if (event.key !== 'Escape') {
+        return;
+      }
+
+      if (infoModal instanceof HTMLElement && infoModal.getAttribute('aria-hidden') === 'false') {
+        setInfoModalOpen(false);
+        return;
+      }
+
+      if (panel instanceof HTMLElement && panel.getAttribute('aria-hidden') === 'false') {
         setPanelOpen(false);
       }
     });
