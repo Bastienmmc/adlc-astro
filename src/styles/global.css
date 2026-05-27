@@ -147,11 +147,17 @@ p {
 
 .header-inner {
   display: grid;
-  grid-template-columns: 1fr auto auto auto;
+  grid-template-columns: 1fr auto auto;
   align-items: center;
   gap: 1.25rem;
   min-height: 4.4rem;
   padding: 0.625rem 0;
+}
+
+.header-navs {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
 }
 
 .brand {
@@ -207,6 +213,55 @@ p {
 }
 
 [data-theme='light'] .theme-toggle:hover {
+  border-color: rgba(0, 0, 0, 0.24);
+}
+
+.menu-toggle {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--text);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  transition: all var(--transition-interactive);
+  padding: 0;
+}
+
+.menu-toggle span {
+  width: 18px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  transition: transform var(--transition-interactive), opacity var(--transition-interactive);
+}
+
+.menu-toggle[aria-expanded='true'] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.menu-toggle[aria-expanded='true'] span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle[aria-expanded='true'] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.menu-toggle:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+[data-theme='light'] .menu-toggle {
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+[data-theme='light'] .menu-toggle:hover {
   border-color: rgba(0, 0, 0, 0.24);
 }
 
@@ -681,13 +736,52 @@ p {
 
 @media (max-width: 980px) {
   .header-inner {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr auto auto;
     padding: 0.8rem 0;
+    gap: 0.75rem;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+  }
+
+  .header-navs {
+    grid-column: 1 / -1;
+    order: 4;
+    display: none;
+    gap: 0.5rem;
+    flex-direction: column;
+    align-items: stretch;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 0.8rem;
+    margin-top: 0.3rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  .site-header.menu-open .header-navs {
+    display: flex;
   }
 
   .main-nav,
   .secondary-nav {
-    gap: 0.6rem 0.8rem;
+    gap: 0.2rem;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .main-nav a,
+  .secondary-nav a {
+    display: block;
+    padding: 0.65rem 0.45rem;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.1em;
+  }
+
+  .main-nav a:hover,
+  .secondary-nav a:hover {
+    background: var(--surface-offset);
   }
 
   .services-grid,

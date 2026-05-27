@@ -68,6 +68,55 @@ const {
         return (header instanceof HTMLElement ? header.offsetHeight : 0) + 16;
       };
 
+      const siteHeader = document.querySelector('.site-header');
+      const menuToggle = document.querySelector('[data-menu-toggle]');
+
+      const closeMobileMenu = () => {
+        if (!(menuToggle instanceof HTMLButtonElement) || !(siteHeader instanceof HTMLElement)) {
+          return;
+        }
+
+        siteHeader.classList.remove('menu-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Ouvrir le menu');
+        document.body.classList.remove('lock-scroll');
+      };
+
+      const openMobileMenu = () => {
+        if (!(menuToggle instanceof HTMLButtonElement) || !(siteHeader instanceof HTMLElement)) {
+          return;
+        }
+
+        siteHeader.classList.add('menu-open');
+        menuToggle.setAttribute('aria-expanded', 'true');
+        menuToggle.setAttribute('aria-label', 'Fermer le menu');
+        document.body.classList.add('lock-scroll');
+      };
+
+      if (menuToggle instanceof HTMLButtonElement && siteHeader instanceof HTMLElement) {
+        menuToggle.addEventListener('click', () => {
+          const isOpen = siteHeader.classList.contains('menu-open');
+
+          if (isOpen) {
+            closeMobileMenu();
+          } else {
+            openMobileMenu();
+          }
+        });
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') {
+            closeMobileMenu();
+          }
+        });
+
+        window.addEventListener('resize', () => {
+          if (window.innerWidth > 980) {
+            closeMobileMenu();
+          }
+        });
+      }
+
       const scrollToHash = (hash, updateHistory) => {
         if (!hash) {
           return;
@@ -99,6 +148,10 @@ const {
 
         if (!(link instanceof HTMLAnchorElement)) {
           return;
+        }
+
+        if (link.closest('.header-navs')) {
+          closeMobileMenu();
         }
 
         const url = new URL(link.href, window.location.href);
